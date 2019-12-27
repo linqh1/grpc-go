@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/golang/protobuf/proto"
 	"log"
-	"myProtobuf/score_server"
+	"myProtobuf/myproto"
 	"net"
 	"os"
 )
@@ -17,8 +17,8 @@ type ReceiveBytes struct {
 
 var listenAdd = ":8888"
 
-func (r *ReceiveBytes) Add(newData []byte) ([]*score_server.BaseScoreInfoT, error) {
-	var result []*score_server.BaseScoreInfoT
+func (r *ReceiveBytes) Add(newData []byte) ([]*myproto.DispatchTask, error) {
+	var result []*myproto.DispatchTask
 	for len(newData) > 0 {
 		if !r.headerSet {
 			b := newData[0]
@@ -34,16 +34,16 @@ func (r *ReceiveBytes) Add(newData []byte) ([]*score_server.BaseScoreInfoT, erro
 			newData = newData[1:]
 		} else {
 			length, _ := proto.DecodeVarint(r.header)
-			if uint64(len(newData)) > length-uint64(len(r.data)) {
+			if uint64(len(newData)) >= length-uint64(len(r.data)) {
 				protobufByte := append(r.data, newData[0:length-uint64(len(r.data))]...)
-				var score = &score_server.BaseScoreInfoT{}
-				err := proto.Unmarshal(protobufByte, score)
+				var dispatchTask = &myproto.DispatchTask{}
+				err := proto.Unmarshal(protobufByte, dispatchTask)
 				if err != nil {
-					return nil, err
+					return result, err
 				} else {
 					log.Printf("[server] parse success")
 				}
-				result = append(result, score)
+				result = append(result, dispatchTask)
 				newData = newData[length-uint64(len(r.data)):]
 				r.Init()
 			} else {
@@ -90,6 +90,12 @@ func handleConn(conn net.Conn) {
 		strings, err := receive.Add(tmp[:n])
 		if err != nil {
 			log.Printf("[server] parse data error:%v\n", err)
+			if len(strings) > 0 {
+				log.Printf("[server] but parse some message success.\n")
+				for i := range strings {
+					log.Printf("[server] receive:%v\n", strings[i])
+				}
+			}
 			conn.Close()
 			return
 		}

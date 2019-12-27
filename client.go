@@ -5,7 +5,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"io"
 	"log"
-	"myProtobuf/score_server"
+	"myProtobuf/myproto"
 	"net"
 	"os"
 	"time"
@@ -27,9 +27,9 @@ func StartClient() {
 	go readConn(conn)
 	ticker := time.NewTicker(time.Hour)
 	message := getSendMessage()
-	fmt.Printf("[client] to send protobuf object:%#v\n", message)
 	bytes, _ := proto.Marshal(message)
 	msgLen := len(bytes)
+	fmt.Printf("[client] to send protobuf object:%#v\n.length:%v\n", message, msgLen)
 	for ; true; <-ticker.C {
 		log.Println("[client] spilt protobuf data to 2 part")
 		log.Println("[client] send first part")
@@ -62,21 +62,23 @@ func init() {
 	fmt.Println(stringArr)
 }
 
-func getSendMessage() *score_server.BaseScoreInfoT {
-	score_info := &score_server.BaseScoreInfoT{}
-	score_info.WinCount = new(int32)
-	*score_info.WinCount = 1
-	score_info.LoseCount = new(int32)
-	*score_info.LoseCount = 2
-	score_info.ExceptionCount = new(int32)
-	*score_info.ExceptionCount = 3
-	score_info.KillCount = new(int32)
-	*score_info.KillCount = 4
-	score_info.DeathCount = new(int32)
-	*score_info.DeathCount = 5
-	score_info.AssistCount = new(int32)
-	*score_info.AssistCount = 6
-	score_info.Rating = new(int64)
-	*score_info.Rating = 1800
-	return score_info
+func getSendMessage() *myproto.DispatchTask {
+	result := &myproto.DispatchTask{
+		TaskId: "firstTaskId",
+		Details: []*myproto.PurgeTask{
+			{PurgeId: "1",
+				Type:    "dir",
+				Content: []string{"http://cp.quantil.com/a", "http://cp.quantil.com/b"},
+				Headers: map[string]string{"type": "dir", "type1": "dir1"},
+				Action:  "delete",
+			},
+			{PurgeId: "2",
+				Type:    "file",
+				Content: []string{"http://cp.quantil.com/icon.png", "http://cp.quantil.com/serverfile.txt"},
+				Headers: map[string]string{"type": "file", "type1": "file1"},
+				Action:  "prefetch",
+			},
+		},
+	}
+	return result
 }

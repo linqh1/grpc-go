@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package myproto;
+
+message DispatchTask{
+    string taskId = 1;
+    repeated PurgeTask details = 2;
+}
+
+message PurgeTask {
+    string purgeId = 1;
+    string type = 2;
+    repeated string content = 3;
+    map<string, string> headers = 4;
+    string action = 5;
+}
