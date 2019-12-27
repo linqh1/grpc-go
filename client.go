@@ -26,18 +26,24 @@ func StartClient() {
 	}
 	go readConn(conn)
 	ticker := time.NewTicker(time.Hour)
-	message := getSendMessage()
-	bytes, _ := proto.Marshal(message)
-	msgLen := len(bytes)
-	fmt.Printf("[client] to send protobuf object:%#v\n.length:%v\n", message, msgLen)
+	message1 := getSendMessage()
+	bytes1, _ := proto.Marshal(message1)
+	msgLen1 := len(bytes1)
+	message2 := getSendMessage()
+	message2.TaskId = "taskid2"
+	bytes2, _ := proto.Marshal(message2)
+	msgLen2 := len(bytes2)
+	fmt.Printf("[client] to send protobuf object:%#v\n.length:%v\n", message1, msgLen1)
+	fmt.Printf("[client] to send protobuf object:%#v\n.length:%v\n", message2, msgLen2)
 	for ; true; <-ticker.C {
 		log.Println("[client] spilt protobuf data to 2 part")
 		log.Println("[client] send first part")
-		conn.Write(proto.EncodeVarint(uint64(msgLen)))
-		conn.Write(bytes[:msgLen/2])
+		conn.Write(proto.EncodeVarint(uint64(msgLen1)))
+		conn.Write(bytes1[:msgLen1/2]) // 拆包
 		time.Sleep(time.Second)
 		log.Println("[client] send second part. and append some extra bytes")
-		conn.Write(append(bytes[msgLen/2:], []byte{1, 3, 4, 6, 7}...))
+		conn.Write(append(bytes1[msgLen1/2:], append(proto.EncodeVarint(uint64(msgLen2)), bytes2[:msgLen2/2]...)...)) //粘包
+		conn.Write(append(bytes2[msgLen2/2:], []byte{1, 3, 5, 7}...))
 	}
 }
 
