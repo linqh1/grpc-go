@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	"io"
 	"log"
 	"myProtobuf/myproto"
 	"net"
@@ -53,11 +52,11 @@ func readConn(conn net.Conn) {
 		n, err := conn.Read(tmp)
 		if err != nil && !os.IsTimeout(err) {
 			log.Printf("[client] read error:%v\n", err)
+			closeErr := conn.Close()
+			log.Printf("[client] close error:%v\n", closeErr)
 			panic(err)
 		}
-		if err != io.EOF {
-			log.Printf("[clinet] received message:%v\n", string(tmp[:n]))
-		}
+		log.Printf("[client] received message:%v\n", string(tmp[:n]))
 	}
 }
 
