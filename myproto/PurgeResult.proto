@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package myproto;
+
+message PurgeReuslt {
+    int32 total = 1;
+    repeated SinglePurgeResult results = 2;
+}
+
+message SinglePurgeResult {
+    string purgeId = 1;
+    string status = 2;
+    repeated PurgeError errors = 3;
+}
+
+message PurgeError {
+    string errorCode = 1;
+    string errorMessage = 2;
+}
