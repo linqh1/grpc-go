@@ -7,6 +7,7 @@ import (
 	"myProtobuf/myproto"
 	"net"
 	"os"
+	"time"
 )
 
 type ReceiveBytes struct {
@@ -96,6 +97,9 @@ func handleConn(conn net.Conn) {
 					log.Printf("[server] receive:%v\n", strings[i])
 				}
 			}
+			log.Printf("[server] sleep 5 seconds")
+			time.Sleep(time.Second * 5)
+			log.Printf("[server] close connection")
 			conn.Close()
 			return
 		}

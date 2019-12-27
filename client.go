@@ -51,7 +51,8 @@ func readConn(conn net.Conn) {
 	tmp := make([]byte, 256)
 	for {
 		n, err := conn.Read(tmp)
-		if err != nil && err != io.EOF && !os.IsTimeout(err) {
+		if err != nil && !os.IsTimeout(err) {
+			log.Printf("[client] read error:%v\n", err)
 			panic(err)
 		}
 		if err != io.EOF {
