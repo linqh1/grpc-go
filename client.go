@@ -49,7 +49,9 @@ func StartClient() {
 func readConn(conn net.Conn) {
 	tmp := make([]byte, 256)
 	for {
+		//TODO: Read是无阻塞的,会造成cpu空转
 		n, err := conn.Read(tmp)
+		log.Printf("[client] read from connection success")
 		if err != nil && !os.IsTimeout(err) {
 			log.Printf("[client] read error:%v\n", err)
 			closeErr := conn.Close()
