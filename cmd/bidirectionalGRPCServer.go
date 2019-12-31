@@ -20,10 +20,8 @@ func (doublesideserver) GetTask(server bidirectional.ChatServer_GetTaskServer) e
 			return err
 		}
 		log.Printf("[server] receive:%v\n", *in)
-		for _, str := range []string{"hello", "what your name", "good bye"} {
-			if err := server.Send(&bidirectional.ChatInfo{Name: str}); err != nil {
-				return err
-			}
+		if err := server.Send(&bidirectional.ChatInfo{Name: in.Name}); err != nil {
+			return err
 		}
 	}
 }

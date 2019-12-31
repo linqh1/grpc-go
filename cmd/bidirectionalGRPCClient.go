@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"myProtobuf/proto/bidirectional"
+	"time"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	waitc := make(chan struct{})
+	//waitc := make(chan struct{})
 	client := bidirectional.NewChatServerClient(conn)
 	taskClient, err := client.GetTask(context.Background())
 	if err != nil {
@@ -23,7 +24,7 @@ func main() {
 		for {
 			in, err := taskClient.Recv()
 			if err == io.EOF {
-				close(waitc)
+				//close(waitc)
 				return
 			}
 			if err != nil {
@@ -33,12 +34,15 @@ func main() {
 			}
 		}
 	}()
-	for _, v := range []string{"1.png", "2.css", "3.gif"} {
-		err := taskClient.Send(&bidirectional.ChatInfo{Name: v})
-		if err != nil {
-			log.Printf("[client] send error:%v\n", err)
+	for {
+		for _, v := range []string{"hello", "how do you do", "good bye"} {
+			err := taskClient.Send(&bidirectional.ChatInfo{Name: v})
+			if err != nil {
+				log.Printf("[client] send error:%v\n", err)
+			}
 		}
+		time.Sleep(200 * time.Millisecond)
 	}
-	taskClient.CloseSend()
-	<-waitc
+	//taskClient.CloseSend()
+	//<-waitc
 }
