@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/golang/protobuf/proto"
 	"log"
-	"myProtobuf/myproto"
+	"myProtobuf/proto/myproto"
 	"net"
 	"os"
 	"time"
