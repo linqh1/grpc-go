@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package serversiderpc;
+
+service TaskDispatcher {
+    // Sends a greeting
+    rpc GetTask (RequestInfo) returns (stream TaskInfo) {}
+}
+
+// The request message containing the user's name.
+message RequestInfo {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message TaskInfo {
+    string message = 1;
+}
