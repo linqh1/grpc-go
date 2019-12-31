@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 	"log"
-	"myProtobuf/grpcservice"
+	"myProtobuf/simplerpc"
 	"net"
 	"time"
 )
@@ -13,9 +13,9 @@ import (
 type myserver struct {
 }
 
-func (myserver) SayHello(context context.Context, req *grpcservice.HelloRequest) (resp *grpcservice.HelloReply, err error) {
+func (myserver) SayHello(context context.Context, req *simplerpc.HelloRequest) (resp *simplerpc.HelloReply, err error) {
 	log.Printf("[grpc server] request has been received successfully: %v\n", *req)
-	resp = &grpcservice.HelloReply{
+	resp = &simplerpc.HelloReply{
 		Message: req.Name + " has been received",
 	}
 	return
@@ -40,6 +40,6 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	grpcservice.RegisterGreeterServer(s, new(myserver))
+	simplerpc.RegisterGreeterServer(s, new(myserver))
 	s.Serve(lis)
 }
