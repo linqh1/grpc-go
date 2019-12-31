@@ -3,7 +3,7 @@ package main
 import (
 	"google.golang.org/grpc"
 	"log"
-	"myProtobuf/serversiderpc"
+	"myProtobuf/proto/serverside"
 	"net"
 	"time"
 )
@@ -11,15 +11,15 @@ import (
 type serversideserver struct {
 }
 
-func (serversideserver) GetTask(req *serversiderpc.RequestInfo, server serversiderpc.TaskDispatcher_GetTaskServer) error {
-	err := server.Send(&serversiderpc.TaskInfo{
+func (serversideserver) GetTask(req *serverside.RequestInfo, server serverside.TaskDispatcher_GetTaskServer) error {
+	err := server.Send(&serverside.TaskInfo{
 		Message: "first message",
 	})
 	if err != nil {
 		log.Printf("[grpc server-side stream server] send error:%v\n", err)
 	}
 	time.Sleep(5 * time.Second)
-	err = server.Send(&serversiderpc.TaskInfo{
+	err = server.Send(&serverside.TaskInfo{
 		Message: "second message",
 	})
 	if err != nil {
@@ -27,7 +27,7 @@ func (serversideserver) GetTask(req *serversiderpc.RequestInfo, server serversid
 	}
 	go func() {
 		time.Sleep(2 * time.Second)
-		goerr := server.Send(&serversiderpc.TaskInfo{ // return 完后再写入会出错
+		goerr := server.Send(&serverside.TaskInfo{ // return 完后再写入会出错
 			Message: "third message send in go routine",
 		})
 		if goerr != nil {
@@ -44,6 +44,6 @@ func main() {
 	}
 	log.Printf("[grpc server-side stream server] listen on port:%v\n", "8888")
 	s := grpc.NewServer()
-	serversiderpc.RegisterTaskDispatcherServer(s, new(serversideserver))
+	serverside.RegisterTaskDispatcherServer(s, new(serversideserver))
 	s.Serve(lis)
 }

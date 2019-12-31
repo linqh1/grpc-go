@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc"
 	"io"
 	"log"
-	"myProtobuf/bidirectionalrpc"
+	"myProtobuf/proto/bidirectional"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 		panic(err)
 	}
 	waitc := make(chan struct{})
-	client := bidirectionalrpc.NewChatServerClient(conn)
+	client := bidirectional.NewChatServerClient(conn)
 	taskClient, err := client.GetTask(context.Background())
 	if err != nil {
 		panic(err)
@@ -34,7 +34,7 @@ func main() {
 		}
 	}()
 	for _, v := range []string{"1.png", "2.css", "3.gif"} {
-		err := taskClient.Send(&bidirectionalrpc.ChatInfo{Name: v})
+		err := taskClient.Send(&bidirectional.ChatInfo{Name: v})
 		if err != nil {
 			log.Printf("[client] send error:%v\n", err)
 		}

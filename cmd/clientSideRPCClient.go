@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc"
 	"io"
 	"log"
-	"myProtobuf/clientsiderpc"
+	"myProtobuf/proto/clientside"
 )
 
 func main() {
@@ -13,13 +13,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	uploadClient, err := clientsiderpc.NewFileBatchUploadClient(conn).Upload(context.Background())
+	uploadClient, err := clientside.NewFileBatchUploadClient(conn).Upload(context.Background())
 	if err != nil {
 		panic(err)
 	}
 	for _, v := range []string{"1.png", "2.css", "3.gif"} {
 		log.Printf("[grpc client-side stream client] send:%v\n", v)
-		err := uploadClient.Send(&clientsiderpc.FileInfo{
+		err := uploadClient.Send(&clientside.FileInfo{
 			Name: v,
 		})
 		if err == io.EOF {

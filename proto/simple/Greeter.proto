@@ -1,18 +1,18 @@
 syntax = "proto3";
 
-package clientsiderpc;
+package simple;
 
-service FileBatchUpload {
+service Greeter {
     // Sends a greeting
-    rpc Upload (stream FileInfo) returns (FileUploadResponse) {}
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
 }
 
 // The request message containing the user's name.
-message FileInfo {
+message HelloRequest {
     string name = 1;
 }
 
 // The response message containing the greetings
-message FileUploadResponse {
+message HelloReply {
     string message = 1;
 }

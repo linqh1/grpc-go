@@ -4,14 +4,14 @@ import (
 	"google.golang.org/grpc"
 	"io"
 	"log"
-	"myProtobuf/clientsiderpc"
+	"myProtobuf/proto/clientside"
 	"net"
 )
 
 type clientsideserver struct {
 }
 
-func (clientsideserver) Upload(server clientsiderpc.FileBatchUpload_UploadServer) error {
+func (clientsideserver) Upload(server clientside.FileBatchUpload_UploadServer) error {
 	for {
 		info, err := server.Recv()
 		if err == io.EOF {
@@ -23,7 +23,7 @@ func (clientsideserver) Upload(server clientsiderpc.FileBatchUpload_UploadServer
 		}
 		log.Printf("[grpc client-side stream server] receive %v\n", *info)
 	}
-	server.SendAndClose(&clientsiderpc.FileUploadResponse{Message: "receive success"})
+	server.SendAndClose(&clientside.FileUploadResponse{Message: "receive success"})
 	return nil
 }
 
@@ -34,6 +34,6 @@ func main() {
 	}
 	log.Printf("[grpc client-side stream server] listen on port:%v\n", "8888")
 	s := grpc.NewServer()
-	clientsiderpc.RegisterFileBatchUploadServer(s, new(clientsideserver))
+	clientside.RegisterFileBatchUploadServer(s, new(clientsideserver))
 	s.Serve(lis)
 }

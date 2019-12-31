@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc"
 	"io"
 	"log"
-	"myProtobuf/serversiderpc"
+	"myProtobuf/proto/serverside"
 )
 
 func main() {
@@ -13,8 +13,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	client := serversiderpc.NewTaskDispatcherClient(conn)
-	taskClient, err := client.GetTask(context.Background(), &serversiderpc.RequestInfo{
+	client := serverside.NewTaskDispatcherClient(conn)
+	taskClient, err := client.GetTask(context.Background(), &serverside.RequestInfo{
 		Name: "request1",
 	})
 	if err != nil {

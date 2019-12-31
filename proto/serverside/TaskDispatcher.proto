@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package serversiderpc;
+package serverside;
 
 service TaskDispatcher {
     // Sends a greeting
