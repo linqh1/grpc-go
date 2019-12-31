@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bidirectionalrpc;
+
+service ChatServer {
+    // Sends a greeting
+    rpc GetTask (stream ChatInfo) returns (stream ChatInfo) {}
+}
+
+// The request message containing the user's name.
+message ChatInfo {
+    string name = 1;
+}
