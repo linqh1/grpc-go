@@ -24,23 +24,32 @@ func main() {
 		for {
 			in, err := taskClient.Recv()
 			if err == io.EOF {
+				log.Printf("[client] received EOF\n")
 				//close(waitc)
 				return
 			}
 			if err != nil {
-				log.Fatalf("[client] Failed to receive: %v", err)
+				log.Printf("[client] Failed to receive: %v", err)
+				return
 			} else {
 				log.Printf("[client] received:%v\n", *in)
 			}
 		}
 	}()
+	message := []string{"hello", "how do you do", "good bye"}
+	i := 0
 	for {
-		for _, v := range []string{"hello", "how do you do", "good bye"} {
-			err := taskClient.Send(&bidirectional.ChatInfo{Name: v})
-			if err != nil {
-				log.Printf("[client] send error:%v\n", err)
-			}
+		log.Printf("[client] send %v:\n", message[i])
+		err := taskClient.Send(&bidirectional.ChatInfo{Name: message[i]})
+		if err == io.EOF {
+			log.Printf("[client] send return EOF\n")
+			break
 		}
+		if err != nil {
+			log.Printf("[client] send error:%v\n", err)
+			break
+		}
+		i = (i + 1) % len(message)
 		time.Sleep(200 * time.Millisecond)
 	}
 	//taskClient.CloseSend()
