@@ -2,6 +2,7 @@ package main
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
 	"io"
 	"log"
 	"myProtobuf/proto/clientside"
@@ -12,6 +13,10 @@ type clientsideserver struct {
 }
 
 func (clientsideserver) Upload(server clientside.FileBatchUpload_UploadServer) error {
+	p, ok := peer.FromContext(server.Context())
+	if ok {
+		log.Printf("[grpc client-side stream server] receive from: %v\n", p.Addr.String())
+	}
 	for {
 		info, err := server.Recv()
 		if err == io.EOF {

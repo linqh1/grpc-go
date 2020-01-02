@@ -4,6 +4,7 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/peer"
 	"log"
 	"myProtobuf/proto/simple"
 	"net"
@@ -14,6 +15,10 @@ type myserver struct {
 }
 
 func (myserver) SayHello(context context.Context, req *simple.HelloRequest) (resp *simple.HelloReply, err error) {
+	p, ok := peer.FromContext(context)
+	if ok {
+		log.Printf("[grpc server] receive from: %v\n", p.Addr.String())
+	}
 	log.Printf("[grpc server] request has been received successfully: %v\n", *req)
 	resp = &simple.HelloReply{
 		Message: req.Name + " has been received",

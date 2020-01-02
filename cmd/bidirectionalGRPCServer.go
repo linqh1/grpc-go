@@ -2,6 +2,7 @@ package main
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
 	"io"
 	"log"
 	"myProtobuf/proto/bidirectional"
@@ -11,6 +12,10 @@ import (
 type doublesideserver struct{}
 
 func (doublesideserver) GetTask(server bidirectional.ChatServer_GetTaskServer) error {
+	p, ok := peer.FromContext(server.Context())
+	if ok {
+		log.Printf("[server] receive from: %v\n", p.Addr.String())
+	}
 	for {
 		in, err := server.Recv()
 		if err == io.EOF {

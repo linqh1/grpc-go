@@ -2,6 +2,7 @@ package main
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/peer"
 	"log"
 	"myProtobuf/proto/serverside"
 	"net"
@@ -12,6 +13,10 @@ type serversideserver struct {
 }
 
 func (serversideserver) GetTask(req *serverside.RequestInfo, server serverside.TaskDispatcher_GetTaskServer) error {
+	p, ok := peer.FromContext(server.Context())
+	if ok {
+		log.Printf("[grpc server-side stream server] receive from: %v\n", p.Addr.String())
+	}
 	err := server.Send(&serverside.TaskInfo{
 		Message: "first message",
 	})
