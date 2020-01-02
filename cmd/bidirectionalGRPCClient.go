@@ -36,7 +36,7 @@ func chat(client bidirectional.ChatServerClient) error {
 	ctx := metadata.NewOutgoingContext(context.Background(), metadata.New(map[string]string{"name": "client", "type": "bidirectional"}))
 	taskClient, err := client.GetTask(ctx)
 	if err != nil {
-		log.Printf("[client] start chat with server error:%v\n", err)
+		log.Printf("[client] start chat with server error:%#v\n", err)
 		return err
 	}
 	e := make(chan error)
@@ -95,7 +95,7 @@ func chat(client bidirectional.ChatServerClient) error {
 				break
 			}
 			i = (i + 1) % len(message)
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(1000 * time.Millisecond)
 		}
 	}()
 	return <-e
