@@ -4,6 +4,7 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 	"log"
 	"myProtobuf/proto/simple"
@@ -18,6 +19,10 @@ func (myserver) SayHello(context context.Context, req *simple.HelloRequest) (res
 	p, ok := peer.FromContext(context)
 	if ok {
 		log.Printf("[grpc server] receive from: %v\n", p.Addr.String())
+	}
+	md, ok := metadata.FromIncomingContext(context)
+	if ok {
+		log.Printf("[grpc server] client metadata:\n%v", md)
 	}
 	log.Printf("[grpc server] request has been received successfully: %v\n", *req)
 	resp = &simple.HelloReply{

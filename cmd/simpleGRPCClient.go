@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"math/rand"
 	"myProtobuf/proto/simple"
@@ -16,8 +17,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("[grpc client] dial to server success.sleep 10 senconds and restart server")
-	time.Sleep(10 * time.Second)
+	log.Printf("[grpc client] dial to server success.sleep 5 senconds and restart server")
+	time.Sleep(5 * time.Second)
 	grpcclient := simple.NewGreeterClient(conn)
 	for _, v := range list {
 		go runClient(grpcclient, v)
@@ -27,7 +28,8 @@ func main() {
 
 func runClient(grpcclient simple.GreeterClient, name string) {
 	for {
-		reply, err := grpcclient.SayHello(context.TODO(), &simple.HelloRequest{Name: name})
+		header := metadata.New(map[string]string{"name": "client", "type": "simple"})
+		reply, err := grpcclient.SayHello(metadata.NewOutgoingContext(context.Background(), header), &simple.HelloRequest{Name: name})
 		if err != nil {
 			log.Printf("[grpc client] grpc call error: %#v\n", err)
 			time.Sleep(time.Duration(rand.Intn(5)) * time.Second)
