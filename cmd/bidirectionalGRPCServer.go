@@ -2,6 +2,7 @@ package main
 
 import (
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 	"io"
 	"log"
@@ -15,6 +16,10 @@ func (doublesideserver) GetTask(server bidirectional.ChatServer_GetTaskServer) e
 	p, ok := peer.FromContext(server.Context())
 	if ok {
 		log.Printf("[server] receive from: %v\n", p.Addr.String())
+	}
+	md, ok := metadata.FromIncomingContext(server.Context())
+	if ok {
+		log.Printf("[server] metadata:\n%v", md)
 	}
 	for {
 		in, err := server.Recv()

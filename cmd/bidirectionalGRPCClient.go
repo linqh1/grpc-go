@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"io"
 	"log"
 	"myProtobuf/proto/bidirectional"
@@ -32,7 +33,8 @@ func main() {
 
 func chat(client bidirectional.ChatServerClient) error {
 	log.Printf("[client] start chat with server\n")
-	taskClient, err := client.GetTask(context.Background())
+	ctx := metadata.NewOutgoingContext(context.Background(), metadata.New(map[string]string{"name": "client", "type": "bidirectional"}))
+	taskClient, err := client.GetTask(ctx)
 	if err != nil {
 		log.Printf("[client] start chat with server error:%v\n", err)
 		return err
