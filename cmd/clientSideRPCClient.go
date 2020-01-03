@@ -15,7 +15,7 @@ func main() {
 	}
 	client := clientside.NewFileBatchUploadClient(conn)
 	for i := 0; i < 10; i++ {
-		run1(i, client)
+		go run1(i, client)
 	}
 	select {}
 }

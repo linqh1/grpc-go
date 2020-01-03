@@ -7,26 +7,30 @@ import (
 	"log"
 	"myProtobuf/proto/clientside"
 	"net"
+	"sync/atomic"
 )
 
 type clientsideserver struct {
 }
 
+var cnt int32
+
 func (clientsideserver) Upload(server clientside.FileBatchUpload_UploadServer) error {
+	index := atomic.AddInt32(&cnt, 1)
 	p, ok := peer.FromContext(server.Context())
 	if ok {
-		log.Printf("[grpc client-side stream server] receive from: %v\n", p.Addr.String())
+		log.Printf("[grpc client-side stream server-%v] receive from: %v\n", index, p.Addr.String())
 	}
 	for {
 		info, err := server.Recv()
 		if err == io.EOF {
-			log.Printf("[grpc client-side stream server] receive end\n")
+			log.Printf("[grpc client-side stream server-%v] receive end\n", index)
 			break
 		}
 		if err != nil {
 			return err
 		}
-		log.Printf("[grpc client-side stream server] receive %v\n", *info)
+		log.Printf("[grpc client-side stream server-%v] receive %v\n", index, *info)
 	}
 	server.SendAndClose(&clientside.FileUploadResponse{Message: "receive success"})
 	return nil
