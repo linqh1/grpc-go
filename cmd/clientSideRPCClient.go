@@ -13,7 +13,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	uploadClient, err := clientside.NewFileBatchUploadClient(conn).Upload(context.Background())
+	client := clientside.NewFileBatchUploadClient(conn)
+	uploadClient, err := client.Upload(context.Background())
 	if err != nil {
 		panic(err)
 	}
