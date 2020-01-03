@@ -14,8 +14,8 @@ server:
 4. 使用proto api解码
 
 # protobuf在grpc中的应用
-代码：
-simpleGRPCClient.go simpleGRPCServer.go
-serverSideRPCClient.go serverSideRPCServer.go
-clientSideRPCClient.go clientSideRPCServer.go
-bidirectionalGRPCClient.go bidirectionalGRPCServer.go
+代码：  
+simpleGRPCClient.go simpleGRPCServer.go  
+serverSideRPCClient.go serverSideRPCServer.go  
+clientSideRPCClient.go clientSideRPCServer.go  
+bidirectionalGRPCClient.go bidirectionalGRPCServer.go  
