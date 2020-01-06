@@ -1,5 +1,5 @@
 syntax = "proto3";
-option java_package="linqh.test.protobuf";
+option java_package="linqh.test.protobuf.bidirectional";
 
 package bidirectional;
 
