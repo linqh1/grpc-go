@@ -4,9 +4,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
+	"grpc-go/proto/bidirectional"
 	"io"
 	"log"
-	"myProtobuf/proto/bidirectional"
 	"net"
 )
 

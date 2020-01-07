@@ -4,9 +4,9 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"grpc-go/proto/simple"
 	"log"
 	"math/rand"
-	"myProtobuf/proto/simple"
 	"time"
 )
 

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
+	"grpc-go/proto/bidirectional"
 	"io"
 	"log"
-	"myProtobuf/proto/bidirectional"
 	"time"
 )
 

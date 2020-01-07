@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"google.golang.org/grpc"
+	"grpc-go/proto/serverside"
 	"io"
 	"log"
-	"myProtobuf/proto/serverside"
 )
 
 func main() {

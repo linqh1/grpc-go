@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"github.com/golang/protobuf/proto"
+	"grpc-go/proto/myproto"
 	"log"
-	"myProtobuf/proto/myproto"
 	"net"
 	"os"
 	"time"

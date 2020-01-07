@@ -5,8 +5,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
+	"grpc-go/proto/simple"
 	"log"
-	"myProtobuf/proto/simple"
 	"net"
 )
 

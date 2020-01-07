@@ -3,9 +3,9 @@ package main
 import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"
+	"grpc-go/proto/clientside"
 	"io"
 	"log"
-	"myProtobuf/proto/clientside"
 	"net"
 	"sync/atomic"
 )

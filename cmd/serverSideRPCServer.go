@@ -3,8 +3,8 @@ package main
 import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"
+	"grpc-go/proto/serverside"
 	"log"
-	"myProtobuf/proto/serverside"
 	"net"
 	"time"
 )
