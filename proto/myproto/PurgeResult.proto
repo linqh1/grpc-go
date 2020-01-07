@@ -1,14 +1,13 @@
 syntax = "proto3";
-option java_package="linqh.test.protobuf";
 
 package myproto;
 
-message PurgeReuslt {
-    int32 total = 1;
-    repeated SinglePurgeResult results = 2;
+service PurgeReporter {
+    // report purge result to TD
+    rpc Report(stream PurgeResult) returns (int32) {}
 }
 
-message SinglePurgeResult {
+message PurgeResult {
     string purgeId = 1;
     string status = 2;
     repeated PurgeError errors = 3;

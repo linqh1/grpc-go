@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package myproto;
 
-message DispatchTask{
-    string taskId = 1;
-    repeated PurgeTask details = 2;
+service TaskDispatcher {
+    // dispatch purge task to cache server
+    rpc Dispatch(stream PurgeTask) returns (int32) {}
 }
 
 message PurgeTask {
