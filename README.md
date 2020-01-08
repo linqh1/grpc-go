@@ -19,3 +19,11 @@ simpleGRPCClient.go simpleGRPCServer.go
 serverSideRPCClient.go serverSideRPCServer.go  
 clientSideRPCClient.go clientSideRPCServer.go  
 bidirectionalGRPCClient.go bidirectionalGRPCServer.go  
+
+代理：  
+目前只发现通过设置环境变脸的方式来通过代理连接到server端
+
+`
+os.Setenv("http_proxy", "socks5://127.0.0.1:1080")
+`
+
