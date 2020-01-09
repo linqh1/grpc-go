@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
 	"grpc-go/proto/bidirectional"
 	"io"
@@ -12,7 +13,8 @@ import (
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:8888", grpc.WithInsecure())
+	keepaliveOpt := grpc.WithKeepaliveParams(keepalive.ClientParameters{PermitWithoutStream: true})
+	conn, err := grpc.Dial("163.171.229.165:8888", grpc.WithInsecure(), keepaliveOpt)
 	if err != nil {
 		panic(err)
 	}
